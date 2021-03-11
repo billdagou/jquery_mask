@@ -1,38 +1,39 @@
 <?php
 namespace Dagou\JqueryMask\ViewHelpers;
 
-use Dagou\JqueryMask\CDN\Customization;
-use Dagou\JqueryMask\CDN\Local;
-use Dagou\JqueryMask\Interfaces\CDN;
+use Dagou\JqueryMask\Interfaces\Source;
+use Dagou\JqueryMask\Source\Local;
+use Dagou\JqueryMask\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\ViewHelpers\Asset\ScriptViewHelper;
 
-class LoadViewHelper extends AbstractViewHelper {
-    public function initializeArguments() {
-        $this->registerArgument('footer', 'boolean', 'Add to footer or not.', FALSE, TRUE);
-        $this->registerArgument('js', 'string', 'jQuery Mask file path.');
-    }
+class LoadViewHelper extends ScriptViewHelper {
+    public function initializeArguments(): void {
+        parent::initializeArguments();
 
-    public function render() {
-        $cdn = $this->getCDN((bool)$this->arguments['js']);
-
-        $cdn->load($this->arguments['js'], $this->arguments['footer']);
+        $this->overrideArgument(
+            'identifier',
+            'string',
+            'Use this identifier within templates to only inject your JS once, even though it is added multiple times.',
+            FALSE,
+            'jquery_mask'
+        );
     }
 
     /**
-     * @param bool $isCustomized
-     *
-     * @return \Dagou\JqueryMask\Interfaces\CDN
+     * @return string
      */
-    protected function getCDN(bool $isCustomized): CDN {
-        if ($isCustomized) {
-            return GeneralUtility::makeInstance(Customization::class);
+    public function render(): string {
+        if (!$this->arguments['src']) {
+            if (($className = ExtensionUtility::getSource()) && is_subclass_of($className, Source::class)) {
+                $source = GeneralUtility::makeInstance($className);
+            } else {
+                $source = GeneralUtility::makeInstance(Local::class);
+            }
+
+            $this->tag->addAttribute('src', $source->getJs());
         }
 
-        if (($className = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['jquery_mask']['CDN']) && is_subclass_of($className, CDN::class)) {
-            return GeneralUtility::makeInstance($className);
-        } else {
-            return GeneralUtility::makeInstance(Local::class);
-        }
+        return parent::render();
     }
 }
