@@ -7,11 +7,11 @@ EXT:jquery_mask allows you to use [jQuery Mask](http://igorescobar.github.io/jQu
 ## How to use it
 You can load the library in your Fluid template.
 
-	<jqmask:load />
+	<jqmask:js />
 
 You can also load your own library.
 
-    <jqmask:load src="..." />
+    <jqmask:js src="..." />
 
 For more options please refer to &lt;f:asset.script&gt;.
 
