@@ -5,7 +5,8 @@ use Dagou\JqueryMask\Interfaces\Source;
 use TYPO3\CMS\Core\SingletonInterface;
 
 abstract class AbstractSource implements Source, SingletonInterface {
-    const URL = '';
+    protected const URL = '';
+    protected const VERSION = '1.14.16';
 
     /**
      * @return string
