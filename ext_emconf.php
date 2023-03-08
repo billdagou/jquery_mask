@@ -6,8 +6,10 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'misc',
     'constraints' => [
         'depends' => [
-            'jquery' => '',
             'typo3' => '11.5.0-11.5.99',
+        ],
+        'suggests' => [
+            'jquery' => '',
         ],
     ],
     'state' => 'stable',
