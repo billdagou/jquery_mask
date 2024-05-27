@@ -5,15 +5,9 @@ EXT:jquery_mask allows you to use [jQuery Mask](http://igorescobar.github.io/jQu
 **The extension version only matches the jQuery Mask library version, it doesn't mean anything else.**
 
 ## How to use it
-You can load the library in your Fluid template.
+You can load the library in your Fluid template easily.
 
-	<jqmask:js />
-
-You can also load your own library.
-
-    <jqmask:js src="..." />
-
-For more options please refer to &lt;f:asset.script&gt;.
+    <f:asset.script identifier="jquery_mask" src="{jqmask:uri.js()}" />
 
 To use other jQuery Mask source, you can register it in `ext_localconf.php` or `AdditionalConfiguration.php`.
 
